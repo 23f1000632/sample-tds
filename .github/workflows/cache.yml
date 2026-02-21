@@ -1,0 +1,35 @@
+name: cache-ci
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: prime-cache-455d49c
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cache-455d49c
+          restore-keys: |
+            cache-455d49c
+
+      - name: Install deps
+        run: |
+          echo "fastapi\nrequests\npandas" > requirements.txt
+          pip install -r requirements.txt
+
+      - name: Show cache result
+        run: echo "cache hit = ${{ steps.cache.outputs.cache-hit }}"
