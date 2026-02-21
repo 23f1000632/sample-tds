@@ -28,7 +28,11 @@ jobs:
 
       - name: Install deps
         run: |
-          echo "fastapi\nrequests\npandas" > requirements.txt
+          cat << 'EOF' > requirements.txt
+          fastapi
+          requests
+          pandas
+          EOF
           pip install -r requirements.txt
 
       - name: Show cache result
